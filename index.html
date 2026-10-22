@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Olive &amp; Ember Restaurant — Dinner, Grill &amp; Fresh Flavors | Demo by Dinal Studios</title>
+<meta name="description" content="Olive & Ember restaurant demo website: full menu by category, chef specials, table reservation form, location and opening hours. Demo project by Dinal Studios — custom restaurant websites available for order.">
+<style>
+  :root{
+    --ink:#23201c; --charcoal:#2e2a25; --olive:#5c6b3c; --olive-dark:#43512b;
+    --gold:#c9a24b; --cream:#faf6ef; --paper:#fffdf8; --muted:#7c7468;
+    --line:#e7ddcb; --radius:16px; --shadow:0 12px 32px rgba(35,32,28,.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--cream);line-height:1.65}
+  .sans{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+  .container{width:min(1140px,92%);margin:0 auto}
+  a{text-decoration:none;color:inherit}
+  .btn{display:inline-block;padding:.85rem 1.8rem;border-radius:999px;font-weight:600;transition:.25s;border:2px solid transparent;cursor:pointer;font-size:1rem;font-family:"Segoe UI",system-ui,sans-serif}
+  .btn-gold{background:var(--gold);color:#241c05}
+  .btn-gold:hover{background:#b28f3a;transform:translateY(-2px)}
+  .btn-olive{background:var(--olive);color:#fff}
+  .btn-olive:hover{background:var(--olive-dark)}
+  .btn-ghost{border-color:#fff;color:#fff;background:transparent}
+  .btn-ghost:hover{background:#fff;color:var(--charcoal)}
+  section{padding:4.5rem 0}
+  .section-head{text-align:center;max-width:660px;margin:0 auto 3rem}
+  .section-head .kicker{font-family:"Segoe UI",system-ui,sans-serif;text-transform:uppercase;letter-spacing:.24em;font-size:.78rem;font-weight:700;color:var(--olive)}
+  .section-head h2{font-size:clamp(1.9rem,4vw,2.7rem);color:var(--charcoal);margin:.5rem 0 .8rem;line-height:1.15}
+  .section-head p{color:var(--muted)}
+  .divider{width:70px;height:3px;background:var(--gold);margin:1rem auto 0;border-radius:2px}
+  header{position:fixed;inset:0 0 auto 0;z-index:50;background:rgba(35,32,28,.94);backdrop-filter:blur(8px)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:.85rem 0;font-family:"Segoe UI",system-ui,sans-serif}
+  .logo{color:#fff;font-weight:800;font-size:1.3rem;letter-spacing:.03em;display:flex;align-items:center;gap:.6rem}
+  .logo svg{width:32px;height:32px}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{color:#efe8da;font-weight:500}
+  .nav-links a:hover{color:var(--gold)}
+  .burger{display:none;background:none;border:0;cursor:pointer;padding:.4rem}
+  .burger span{display:block;width:26px;height:3px;background:#fff;margin:5px 0;border-radius:2px}
+  .hero{min-height:100vh;display:flex;align-items:center;text-align:center;color:#fff;padding:8rem 0 5rem;
+    background:
+      radial-gradient(ellipse at 15% 25%, rgba(201,162,75,.35), transparent 55%),
+      radial-gradient(ellipse at 85% 85%, rgba(92,107,60,.45), transparent 55%),
+      linear-gradient(155deg,#171410 0%,#2e2a25 50%,#3d362b 100%)}
+  .hero .badge{display:inline-block;border:1px solid rgba(255,255,255,.4);padding:.35rem 1.1rem;border-radius:999px;font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1.4rem;font-family:"Segoe UI",system-ui,sans-serif}
+  .hero h1{font-size:clamp(2.5rem,6.5vw,4.5rem);line-height:1.08;margin-bottom:1.1rem}
+  .hero h1 em{font-style:italic;color:var(--gold)}
+  .hero p{max-width:640px;margin:0 auto 2.2rem;font-size:1.12rem;color:#e9e1d0;font-family:"Segoe UI",system-ui,sans-serif}
+  .hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .specials{background:var(--paper)}
+  .special-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.6rem}
+  .special-card{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:#fff}
+  .special-art{height:170px;display:flex;align-items:center;justify-content:center}
+  .special-art svg{width:86px;height:86px}
+  .art-1{background:linear-gradient(135deg,#7a5c2e,#c9a24b)}
+  .art-2{background:linear-gradient(135deg,#43512b,#7d9153)}
+  .art-3{background:linear-gradient(135deg,#5d2f22,#a0522d)}
+  .special-body{padding:1.5rem}
+  .special-body .chef-tag{font-family:"Segoe UI",system-ui,sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--olive)}
+  .special-body h3{font-size:1.3rem;margin:.35rem 0 .5rem;color:var(--charcoal);display:flex;justify-content:space-between;gap:.8rem}
+  .special-body h3 .price{color:#a5812f;white-space:nowrap}
+  .special-body p{color:var(--muted);font-size:.95rem}
+  .menu-tabs{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.6rem;font-family:"Segoe UI",system-ui,sans-serif}
+  .tab{padding:.55rem 1.4rem;border-radius:999px;border:2px solid var(--line);background:#fff;font-weight:600;cursor:pointer;color:var(--charcoal);transition:.2s;font-size:.98rem}
+  .tab.active,.tab:hover{background:var(--olive);color:#fff;border-color:var(--olive)}
+  .menu-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:0 3rem;max-width:1000px;margin:0 auto}
+  .dish{padding:1.05rem 0;border-bottom:1px dashed var(--line)}
+  .dish-head{display:flex;align-items:baseline;gap:.6rem}
+  .dish-head h3{font-size:1.12rem;color:var(--charcoal)}
+  .dish-head .dots{flex:1;border-bottom:2px dotted #cfc2a6;transform:translateY(-4px)}
+  .dish-head .price{font-weight:700;color:#a5812f;font-size:1.08rem}
+  .dish p{color:var(--muted);font-size:.92rem;margin-top:.25rem;max-width:90%}
+  .dish .spicy{display:inline-block;margin-left:.5rem;font-family:"Segoe UI",system-ui,sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#b3402a;background:#fbe9e2;padding:.15rem .55rem;border-radius:999px;vertical-align:middle}
+  .reserve{background:linear-gradient(160deg,#2e2a25,#3d362b);color:#efe8da}
+  .reserve .section-head h2{color:#fff}
+  .reserve .section-head p{color:#cfc4ab}
+  .reserve-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:2.5rem;align-items:start}
+  form.res-form{background:var(--paper);color:var(--ink);border-radius:20px;padding:2.2rem;box-shadow:var(--shadow);font-family:"Segoe UI",system-ui,sans-serif}
+  form.res-form h3{font-size:1.35rem;color:var(--charcoal);margin-bottom:1.2rem;font-family:Georgia,serif}
+  .field{margin-bottom:1rem}
+  .field label{display:block;font-weight:600;font-size:.92rem;margin-bottom:.35rem;color:var(--charcoal)}
+  .field input,.field select,.field textarea{width:100%;padding:.72rem .9rem;border:2px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--olive)}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .form-msg{display:none;margin-top:1rem;padding:.9rem 1.1rem;border-radius:10px;background:#edf3e2;color:#3c5518;font-weight:600;font-size:.95rem}
+  .info-card{border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:2.2rem;font-family:"Segoe UI",system-ui,sans-serif}
+  .info-card h3{color:#fff;font-size:1.3rem;margin-bottom:1.1rem;font-family:Georgia,serif}
+  .info-card p{margin-bottom:1rem;font-size:.97rem}
+  .info-card strong{color:var(--gold)}
+  .hours-row{display:flex;justify-content:space-between;padding:.55rem 0;border-bottom:1px dashed rgba(255,255,255,.22);font-size:.95rem}
+  .hours-row:last-child{border-bottom:0}
+  .hours-row.today{color:#fff;font-weight:700}
+  footer{background:#171410;color:#b8ab90;padding:3.5rem 0 2rem;font-family:"Segoe UI",system-ui,sans-serif}
+  .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;margin-bottom:2.5rem}
+  footer h4{color:#fff;margin-bottom:.9rem}
+  footer p,footer li{font-size:.93rem}
+  footer ul{list-style:none}
+  footer li{padding:.25rem 0}
+  .demo-note{border-top:1px solid rgba(255,255,255,.14);padding-top:1.6rem;text-align:center;font-size:.9rem}
+  .demo-note a{color:var(--gold);font-weight:700}
+  @media (max-width:860px){
+    .reserve-grid{grid-template-columns:1fr}
+    .nav-links{position:absolute;top:100%;left:0;right:0;background:var(--charcoal);flex-direction:column;padding:1.2rem 5%;gap:1rem;display:none}
+    .nav-links.open{display:flex}
+    .nav-cta{display:none}
+    .burger{display:block}
+    .field-row{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a class="logo" href="#top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#c9a24b" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><path d="M3 12h2M19 12h2M12 3v2M12 19v2"/></svg>
+      Olive &amp; Ember
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#specials">Chef Specials</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#reserve">Reserve a Table</a></li>
+      <li><a href="#reserve">Find Us</a></li>
+    </ul>
+    <a class="btn btn-gold nav-cta" href="https://laborx.com/freelancers/users/id474525" target="_blank" rel="noopener">Order a website like this</a>
+    <button class="burger" id="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="container">
+    <span class="badge">Wood-Fired Kitchen &amp; Grill</span>
+    <h1>Food Cooked Slow,<br><em>Served Warm.</em></h1>
+    <p>Fresh ingredients, real fire and recipes built on flavor — not shortcuts. Book a table and taste the difference tonight.</p>
+    <div class="hero-actions">
+      <a class="btn btn-gold" href="#reserve">Reserve a Table</a>
+      <a class="btn btn-ghost" href="#menu">Explore the Menu</a>
+    </div>
+  </div>
+</section>
+
+<section class="specials" id="specials">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">Chef Specials</span>
+      <h2>Signatures of the House</h2>
+      <p>Three dishes our kitchen is known for — prepared fresh every evening, in limited quantities.</p>
+      <div class="divider"></div>
+    </div>
+    <div class="special-grid">
+      <article class="special-card">
+        <div class="special-art art-1" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><circle cx="12" cy="13" r="3.5"/><path d="M8 3c0 1.4-1.2 1.6-1.2 3M12.5 3c0 1.4-1.2 1.6-1.2 3M17 3c0 1.4-1.2 1.6-1.2 3"/></svg>
+        </div>
+        <div class="special-body">
+          <span class="chef-tag">Chef's Signature</span>
+          <h3>Ember-Grilled Steak <span class="price">$24.00</span></h3>
+          <p>28-day aged cut grilled over real embers, garlic-herb butter, smoked salt and seasonal vegetables.</p>
+        </div>
+      </article>
+      <article class="special-card">
+        <div class="special-art art-2" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><path d="M5 20c8 1 14-5 14-15-9 0-15 5-14 15z"/><path d="M5 20c2-6 6-10 10-12"/></svg>
+        </div>
+        <div class="special-body">
+          <span class="chef-tag">From the Garden</span>
+          <h3>Olive Garden Pasta <span class="price">$16.50</span></h3>
+          <p>Hand-cut pasta tossed with olive oil, sun-ripened tomatoes, basil, olives and shaved hard cheese.</p>
+        </div>
+      </article>
+      <article class="special-card">
+        <div class="special-art art-3" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"><path d="M12 21c-5 0-8-2-8-2 1-5 4-9 8-11 4 2 7 6 8 11 0 0-3 2-8 2z"/><path d="M12 8V4M9.5 5.5 12 4l2.5 1.5"/></svg>
+        </div>
+        <div class="special-body">
+          <span class="chef-tag">Guest Favorite</span>
+          <h3>Honey-Glazed Salmon <span class="price">$21.00</span></h3>
+          <p>Fresh salmon fillet with a honey and citrus glaze, charred lemon and herbed rice.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">Full Menu</span>
+      <h2>Starters, Mains, Grill &amp; More</h2>
+      <p>Pick a category to explore. Ask your server about today's fresh catch and seasonal sides.</p>
+      <div class="divider"></div>
+    </div>
+    <div class="menu-tabs" role="tablist">
+      <button class="tab active" data-filter="starters">Starters</button>
+      <button class="tab" data-filter="mains">Main Courses</button>
+      <button class="tab" data-filter="grill">From the Grill</button>
+      <button class="tab" data-filter="desserts">Desserts &amp; Drinks</button>
+    </div>
+    <div class="menu-cols" id="menuList"></div>
+  </div>
+</section>
+
+<section class="reserve" id="reserve">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">Reservations</span>
+      <h2>Book Your Table</h2>
+      <p>Reserve in under a minute. For parties of 10 or more, please call us directly.</p>
+      <div class="divider"></div>
+    </div>
+    <div class="reserve-grid">
+      <form class="res-form" id="resForm">
+        <h3>Reservation Details</h3>
+        <div class="field-row">
+          <div class="field">
+            <label for="rName">Full Name</label>
+            <input id="rName" type="text" placeholder="e.g. Maria Lopez" required>
+          </div>
+          <div class="field">
+            <label for="rPhone">Phone Number</label>
+            <input id="rPhone" type="tel" placeholder="e.g. 555 014 7788" required>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="rDate">Date</label>
+            <input id="rDate" type="date" required>
+          </div>
+          <div class="field">
+            <label for="rTime">Time</label>
+            <select id="rTime" required>
+              <option value="">Select a time</option>
+              <option>12:00 PM</option><option>1:00 PM</option><option>2:00 PM</option>
+              <option>5:00 PM</option><option>6:00 PM</option><option>7:00 PM</option>
+              <option>8:00 PM</option><option>9:00 PM</option><option>10:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="rGuests">Guests</label>
+            <select id="rGuests" required>
+              <option value="">How many guests?</option>
+              <option>1 guest</option><option>2 guests</option><option>3 guests</option>
+              <option>4 guests</option><option>5 guests</option><option>6 guests</option>
+              <option>7 guests</option><option>8 guests</option><option>9 guests</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="rArea">Seating Area</label>
+            <select id="rArea">
+              <option>Main Hall</option><option>Terrace</option><option>Window Side</option><option>Private Corner</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="rNotes">Special Requests (optional)</label>
+          <textarea id="rNotes" rows="3" placeholder="Birthday, allergies, high chair, quiet table..."></textarea>
+        </div>
+        <button class="btn btn-olive" type="submit" style="width:100%">Confirm Reservation</button>
+        <div class="form-msg" id="resMsg"></div>
+      </form>
+      <div class="info-card">
+        <h3>Find Us</h3>
+        <p><strong>Address:</strong> 48 Harbor Lane, Old Town District (demo address)</p>
+        <p><strong>Phone:</strong> (555) 014-7788<br><strong>Email:</strong> reservations@oliveandember.example</p>
+        <p><strong>Parking:</strong> Free guest parking behind the building. Step-free entrance on Harbor Lane side.</p>
+        <h3 style="margin-top:1.6rem">Opening Hours</h3>
+        <div class="hours-row" data-day="1"><span>Monday</span><span>12:00 PM – 10:00 PM</span></div>
+        <div class="hours-row" data-day="2"><span>Tuesday</span><span>12:00 PM – 10:00 PM</span></div>
+        <div class="hours-row" data-day="3"><span>Wednesday</span><span>12:00 PM – 10:00 PM</span></div>
+        <div class="hours-row" data-day="4"><span>Thursday</span><span>12:00 PM – 11:00 PM</span></div>
+        <div class="hours-row" data-day="5"><span>Friday</span><span>12:00 PM – 11:30 PM</span></div>
+        <div class="hours-row" data-day="6"><span>Saturday</span><span>11:00 AM – 11:30 PM</span></div>
+        <div class="hours-row" data-day="0"><span>Sunday</span><span>11:00 AM – 9:00 PM</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Olive &amp; Ember Restaurant</h4>
+        <p>Wood-fired kitchen serving honest food in the Old Town District. Demo address: 48 Harbor Lane.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#specials">Chef Specials</a></li>
+          <li><a href="#menu">Full Menu</a></li>
+          <li><a href="#reserve">Reserve a Table</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>Phone: (555) 014-7788</li>
+          <li>Email: reservations@oliveandember.example</li>
+          <li>48 Harbor Lane, Old Town District</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Want This Website?</h4>
+        <p>Your restaurant name, your real menu, your photos and a reservation system that works — customized and delivered fast.</p>
+        <p style="margin-top:.8rem"><a class="btn btn-gold" href="https://laborx.com/freelancers/users/id474525" target="_blank" rel="noopener">Order a website like this</a></p>
+      </div>
+    </div>
+    <div class="demo-note">
+      <p>Demo project by <strong>Dinal Studios</strong> — available for custom order. Olive &amp; Ember is a fictional demo brand created to showcase website design work; it is not a real business.</p>
+      <p style="margin-top:.5rem">&copy; 2026 Dinal Studios. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const MENU = {
+    starters: [
+      {name:"Tomato Bruschetta", price:7.50, desc:"Grilled bread, marinated tomatoes, basil and olive oil."},
+      {name:"Creamy Mushroom Soup", price:8.00, desc:"Slow-cooked mushrooms, cream, thyme and toasted bread."},
+      {name:"Crispy Calamari", price:10.50, desc:"Golden rings with lemon aioli and a pinch of smoked paprika."},
+      {name:"Garden Salad", price:7.00, desc:"Fresh greens, cucumber, radish, olives and house dressing."},
+      {name:"Garlic Butter Prawns", price:11.00, desc:"Sizzling prawns in garlic butter with chili flakes.", spicy:true}
+    ],
+    mains: [
+      {name:"Olive Garden Pasta", price:16.50, desc:"Hand-cut pasta, tomatoes, basil, olives and shaved hard cheese."},
+      {name:"Chicken Parmigiana", price:17.50, desc:"Breaded chicken, rich tomato sauce, melted cheese, herbed potatoes."},
+      {name:"Vegetable Risotto", price:15.00, desc:"Creamy arborio rice with seasonal vegetables and parmesan-style crisp."},
+      {name:"Honey-Glazed Salmon", price:21.00, desc:"Citrus honey glaze, charred lemon and herbed rice."},
+      {name:"Slow Beef Stew", price:19.00, desc:"Beef simmered for six hours with root vegetables and red wine jus."}
+    ],
+    grill: [
+      {name:"Ember-Grilled Steak", price:24.00, desc:"Aged cut, garlic-herb butter, smoked salt, seasonal vegetables."},
+      {name:"Mixed Grill Platter", price:29.00, desc:"Steak strips, chicken skewers and lamb chops — made for sharing."},
+      {name:"BBQ Chicken Half", price:16.00, desc:"Smoky barbecue glaze, grilled corn and house fries."},
+      {name:"Lamb Chops", price:23.50, desc:"Rosemary marinade, mint sauce and roasted potatoes.", spicy:false},
+      {name:"Spicy Wings Basket", price:12.50, desc:"Fire-kissed wings with cooling yogurt dip.", spicy:true}
+    ],
+    desserts: [
+      {name:"Classic Tiramisu", price:8.50, desc:"Coffee-soaked layers with mascarpone cream and cocoa."},
+      {name:"Chocolate Lava Cake", price:9.00, desc:"Warm cake with a molten center, served with vanilla ice cream."},
+      {name:"Fresh Fruit Platter", price:6.50, desc:"Seasonal fruits with a honey and mint drizzle."},
+      {name:"Mint Cooler", price:4.50, desc:"Fresh mint, lime and sparkling water over ice."},
+      {name:"House Lemonade Pitcher", price:7.00, desc:"A full pitcher of hand-pressed lemonade for the table."}
+    ]
+  };
+  const list = document.getElementById('menuList');
+  function renderMenu(cat){
+    list.innerHTML = MENU[cat].map(d => `
+      <div class="dish">
+        <div class="dish-head"><h3>${d.name}${d.spicy ? '<span class="spicy">Spicy</span>' : ''}</h3><span class="dots"></span><span class="price">$${d.price.toFixed(2)}</span></div>
+        <p>${d.desc}</p>
+      </div>`).join('');
+  }
+  renderMenu('starters');
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    renderMenu(t.dataset.filter);
+  }));
+  const dateInput = document.getElementById('rDate');
+  dateInput.min = new Date().toISOString().split('T')[0];
+  document.getElementById('resForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('rName').value.trim();
+    const date = dateInput.value;
+    const time = document.getElementById('rTime').value;
+    const guests = document.getElementById('rGuests').value;
+    const area = document.getElementById('rArea').value;
+    const msg = document.getElementById('resMsg');
+    msg.style.display = 'block';
+    msg.textContent = `Thank you, ${name}! Table for ${guests} in the ${area} on ${date} at ${time}. We will call to confirm shortly. (Front-end demo — no real booking was sent.)`;
+    e.target.reset();
+  });
+  const today = new Date().getDay();
+  document.querySelectorAll('.hours-row').forEach(r => {
+    if (parseInt(r.dataset.day, 10) === today) {
+      r.classList.add('today');
+      r.querySelector('span:last-child').textContent += ' (Today)';
+    }
+  });
+  const burger = document.getElementById('burger');
+  const links = document.getElementById('navLinks');
+  burger.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+</script>
+</body>
+</html>
